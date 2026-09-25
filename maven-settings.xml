@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 本项目专用 Maven 配置：本地仓库置于工作区内（沙箱限制），并使用阿里云镜像加速 -->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+  https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <localRepository>D:/资料文件/大三下作业/实训结课大作业/lost-found-system/.m2repo</localRepository>
+
+    <mirrors>
+        <mirror>
+            <id>aliyunmaven</id>
+            <name>阿里云公共仓库</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <mirrorOf>*</mirrorOf>
+        </mirror>
+    </mirrors>
+</settings>

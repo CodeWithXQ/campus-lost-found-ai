@@ -1,0 +1,73 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lost-found-backend
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lost_found?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:}
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    # 开发阶段打开 SQL 日志，便于调试；正式部署可注释掉
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET:}
+  expire-hours: 168
+
+# AI 图像服务（Python FastAPI）配置
+ai:
+  base-url: http://127.0.0.1:8000
+  timeout-ms: 8000
+  # AI 服务不可用时的冷却时间（毫秒），冷却期内直接走纯文字匹配降级
+  cooldown-ms: 30000
+
+# 文件上传目录（相对后端运行目录）
+file:
+  upload-dir: uploads
+
+# 前端构建产物目录（相对后端运行目录；构建后由后端托管，单端口访问）
+frontend:
+  dist-dir: ../frontend/dist
+
+# 匹配算法参数
+match:
+  # 综合分阈值，达到阈值才生成匹配记录并通知
+  threshold: 0.35
+  # 图像相似度权重 / 文字匹配权重（方案2：6:4）
+  image-weight: 0.6
+  text-weight: 0.4
+  # 图像相似度达到该阈值才参与融合；低于该值视为"无区分力"，退化为纯文字匹配。
+  # 依据：分类模型特征下，同一物品不同角度/光照拍摄的余弦相似度通常仅 0.5~0.8，
+  # 低于 0.5 的相似度缺乏区分力，不应再以 0.6 的权重拉低总分。
+  image-min-confidence: 0.5
+  # k-reciprocal 重排序的近邻数 K（对 top-K 候选做"互近邻"判定，双向强匹配优先）
+  rerank-k: 20
+  # 详情页匹配列表展示下限（放宽自 threshold*0.6，防止漏掉低分但相关的真物品）
+  floor: 0.12
+  # 详情页匹配列表返回的最大候选条数（前端分级展示：前 5 高亮，其余折叠）
+  max-results: 30
+
+# Swagger / Knife4j 接口文档（启动后端后访问 http://localhost:8080/doc.html）
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

@@ -1,0 +1,16 @@
+# 失物招领 AI 图像服务依赖
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+numpy>=1.24
+Pillow>=10.0
+torch>=2.0
+torchvision>=0.15
+timm>=1.0
+cn_clip>=1.5
+
+# ===== OCR（可选）：证件卡类图片文字识别，未安装时 /ocr 接口自动降级 =====
+# 依赖较重（paddlepaddle 数百 MB），按需安装：
+#   pip install paddlepaddle paddleocr
+# paddlepaddle>=2.5
+# paddleocr>=2.7
